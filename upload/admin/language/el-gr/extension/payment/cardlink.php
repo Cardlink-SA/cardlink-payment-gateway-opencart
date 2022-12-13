@@ -23,7 +23,7 @@ $_['text_url_gateway']   = '<br />Gateway URL - Για τη χρήση της δ
 $_['text_url_success']   = '<br />Success URL - παράδειγμα:<br>http://www.yourdomain.gr/index.php?route=extension/payment/cardlink/callback/success';
 $_['text_url_fail']   = '<br />Fail / Cancel URL - παράδειγμα:<br>http://www.yourdomain.gr/index.php?route=extension/payment/cardlink/callback/fail';
 $_['text_url_css']   = '<br />Προαιρετικός Css URL - παράδειγμα:<br>https://www.yourdomain.gr/alpha.css';
-$_['text_instalments'] 	 = '<br />Παράδειγμα: 150:3,600:6 <br /> Παραγγελία συνολικά 150 -> επιτρέψουν 3 δόσεις, σύνολο παραγγελίας 600 -> επιτρέψουν 3 και 6 δόσεις <br /> Αφήστε το κενό για να απενεργοποιήσετε δόσεις';
+$_['text_instalments'] 	 = '<br />Παράδειγμα: 150:3,600:6 <br /> Παραγγελία συνολικά 150 -> επιτρέπονται 3 δόσεις, σύνολο παραγγελίας 600 -> επιτρέπονται 3 και 6 δόσεις. <br /> Μέγιστος αριθμός δόσεων 60. Εξαρτάται από τη σύμβαση του πελάτη με την τράπεζα. <br /> Αφήστε το κενό για να απενεργοποιήσετε δόσεις.';
 $_['text_cardlink']     = '<a onclick="window.open(\'http://www.cardlink.gr\');"><img src="view/image/payment/cardlink.png" alt="Cardlink" title="Cardlink" /></a>';
 
 // Entry

@@ -84,7 +84,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		
 			for($i=0; $i<$c; $i++){
 				list($instal_amount, $instal_term) = explode(":", $split_instal_cardlink[$i]);
-				if($cardlink_total_eur >= $instal_amount){
+				if( ($cardlink_total_eur >= $instal_amount) && ($instal_term <= 60) ){
 					$instal_cardlink .= '<option value="'.$instal_term.'">'. $instal_term . $data['text_instalments_nr'].'</option>'."\n"; 
 				}
 			}
