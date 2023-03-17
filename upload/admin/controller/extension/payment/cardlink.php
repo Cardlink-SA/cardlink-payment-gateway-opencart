@@ -88,6 +88,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
 		$data['entry_instalments'] = $this->language->get('entry_instalments');
+		$data['entry_order_status'] = $this->language->get('entry_order_status');
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
@@ -256,7 +257,8 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		} else {
 			$data['payment_cardlink_url_css'] = $this->config->get('payment_cardlink_url_css');
 		}
-/* 
+
+		/* 
 		if (isset($this->request->post['payment_cardlink_processed_status_id'])) {
 			$data['payment_cardlink_processed_status_id'] = $this->request->post['payment_cardlink_processed_status_id'];
 		} else {
@@ -274,11 +276,17 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		if (!$data['payment_cardlink_failed_status_id']) {
 		 	$data['payment_cardlink_failed_status_id'] = 10;  # "Failed"
 		 }
-		  */
+		*/
 
 		$this->load->model('localisation/order_status');
 
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+
+		if (isset($this->request->post['payment_cardlink_order_status'])) {
+			$data['payment_cardlink_order_status'] = $this->request->post['payment_cardlink_order_status'];
+		} else {
+			$data['payment_cardlink_order_status'] = $this->config->get('payment_cardlink_order_status');
+		}
 
 		if (isset($this->request->post['payment_cardlink_geo_zone_id'])) {
 			$data['payment_cardlink_geo_zone_id'] = $this->request->post['payment_cardlink_geo_zone_id'];

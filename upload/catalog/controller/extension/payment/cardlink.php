@@ -370,9 +370,11 @@ class ControllerExtensionPaymentCardlink extends Controller {
 				if (isset($this->request->post['paymentRef'])) {
 					$message .= 'PaymentRef: ' . $this->request->post['paymentRef'] . "\n";
 				}
-				$message .= 'E.C. Electronic Commerce' . "\n";
-				
-				$this->model_checkout_order->addOrderHistory($order_id, 15, $message, true);
+				$message .= 'CARDLINK ECOMMERCE' . "\n";
+
+				$order_status_id = $this->config->get('payment_cardlink_order_status');
+
+				$this->model_checkout_order->addOrderHistory($order_id, $order_status_id, $message, true);
 			
 				if(!$this->customer->isLogged() && $order_info['customer_id']!=0){
 					$email_query = $this->db->query("SELECT email FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");

@@ -25,6 +25,7 @@ $_['text_url_fail']   = '<br />Fail / Cancel URL - παράδειγμα:<br>http
 $_['text_url_css']   = '<br />Προαιρετικός Css URL - παράδειγμα:<br>https://www.yourdomain.gr/alpha.css';
 $_['text_instalments'] 	 = '<br />Παράδειγμα: 150:3,600:6 <br /> Παραγγελία συνολικά 150 -> επιτρέπονται 3 δόσεις, σύνολο παραγγελίας 600 -> επιτρέπονται 3 και 6 δόσεις. <br /> Μέγιστος αριθμός δόσεων 60. Εξαρτάται από τη σύμβαση του πελάτη με την τράπεζα. <br /> Αφήστε το κενό για να απενεργοποιήσετε δόσεις.';
 $_['text_cardlink']     = '<a onclick="window.open(\'http://www.cardlink.gr\');"><img src="view/image/payment/cardlink.png" alt="Cardlink" title="Cardlink" /></a>';
+$_['text_order_status_note'] = '<br />Κατασταση παραγγελίας μετά απο επιτυχή πληρωμή.';
 
 // Entry
 $_['entry_total']               = 'Σύνολο:';
@@ -50,6 +51,7 @@ $_['entry_status']				= 'Κατάσταση:';
 $_['entry_sort_order']			= 'Σειρά Ταξινόμησης:';
 $_['entry_test']				= 'Περιβάλλον:';
 $_['entry_acquirer']			= 'Οργανισμός αποδοχής πληρωμών:';
+$_['entry_order_status']		= 'Κατάσταση Παραγγελίας:';
 
 // Error
 $_['error_permission']    = 'Ειδοποίηση: Δεν έχετε άδεια να επεξεργαστείτε τη πληρωμή Cardlink!';

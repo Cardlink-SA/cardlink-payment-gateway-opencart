@@ -25,6 +25,7 @@ $_['text_url_fail']   = '<br />Fail / Cancel URL - Example:<br>http://www.yourdo
 $_['text_url_css']   = '<br />Optional Css URL - Example:<br>https://www.yourdomain.gr/alpha.css';
 $_['text_instalments'] 	 = '<br />Example: 150:3,600:6<br />Order total 150 -> allow 3 instalments, order total 600 -> allow 3 and 6 instalments <br /> The plugin can support the maximum number of 60 installments. The exact number depends on the customer’s contract with the bank provider. <br /> Leave empty to deactivate instalments';
 $_['text_cardlink']     = '<a onclick="window.open(\'http://www.cardlink.gr\');"><img src="view/image/payment/cardlink.png" alt="Cardlink" title="Cardlink" /></a>';
+$_['text_order_status_note'] = '<br />Order status after success payment';
 
 // Entry
 $_['entry_total']               = 'Total:';
@@ -50,6 +51,7 @@ $_['entry_status']				= 'Status:';
 $_['entry_sort_order']			= 'Sort Order:';
 $_['entry_test']				= 'Environment:';
 $_['entry_acquirer']			= 'Acquirer:';
+$_['entry_order_status']		= 'Order Status:';
 
 // Error
 $_['error_permission']    = 'Warning: You do not have permission to modify payment Cardlink!';
