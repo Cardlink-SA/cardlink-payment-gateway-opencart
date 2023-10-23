@@ -1,0 +1,247 @@
+<form action="{{ action }}" method="post" id="cardlink_payment" target="{{ target }}">
+    <input type="hidden" name="version" value="{{ version }}" />
+	  <input type="hidden" name="mid" value="{{ mid }}" />
+    <input type="hidden" name="lang" value="{{ lang }}" />
+    <input type="hidden" name="deviceCategory" value="{{ deviceCategory }}" />
+    <input type="hidden" name="orderid" id="mooid" value="{{ orderid }}" />
+    <input type="hidden" name="orderDesc" value="{{ orderDesc }}" />
+    <input type="hidden" name="orderAmount" value="{{ orderAmount }}" />
+    <input type="hidden" name="currency" value="{{ currency }}" />
+    <input type="hidden" name="payerEmail" value="{{ payerEmail }}" />
+    <input type="hidden" name="payerPhone" value="{{ payerPhone }}" />
+    <input type="hidden" name="billCountry" value="{{ billCountry }}" />
+    <input type="hidden" name="billState" value="{{ billState }}" />
+    <input type="hidden" name="billZip" value="{{ billZip }}" />
+    <input type="hidden" name="billCity" value="{{ billCity }}" />
+    <input type="hidden" name="billAddress" value="{{ billAddress }}" />
+    <input type="hidden" name="shipCountry" value="{{ shipCountry }}" />
+    <input type="hidden" name="shipState" value="{{ shipState }}" />
+    <input type="hidden" name="shipZip" value="{{ shipZip }}" />
+    <input type="hidden" name="shipCity" value="{{ shipCity }}" />
+    <input type="hidden" name="shipAddress" value="{{ shipAddress }}" />
+    <input type="hidden" name="payMethod" id="mopaytype" value="IRIS" />
+    <input type="hidden" name="confirmUrl" value="{{ confirmUrl }}" />
+    <input type="hidden" name="cancelUrl" value="{{ cancelUrl }}" />
+    <input type="hidden" name="digest" id="modigest" value="{{ digest }}" />
+</form>
+
+{{ html_output }}
+
+<form action="{{ action }}" method="post" id="paytype">
+  <p align="right">{{ cardlink_paytype }}</p>
+  <p align="right">{{ cardlink_installments }}</p>
+</form>
+
+{% if use_iframe %}
+  {{ html_modal }}
+
+  <script>
+    function set_redirection_status(orderId) {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: 'index.php?route=extension/payment/cardlink_iris/getOrderStatus',
+          data: {
+            order_id: orderId
+          },
+          type: 'post',
+          dataType: 'json',
+          success: function (data) {
+            resolve(data);
+          },
+          error: function (error) {
+            reject();
+          }
+        });
+      });
+    }
+  
+    function check_order_status(orderId) {
+      var polling = setInterval(function () {
+        $.ajax({
+          url: 'index.php?route=extension/payment/cardlink_iris/checkOrderStatus',
+          data: {
+            order_id: orderId
+          },
+          type: 'post',
+          dataType: 'json',
+          success: function (data) {
+            var redirectUrl = data.redirect_url;
+            var redirected = data.redirected;
+            if ( !redirected && redirectUrl != '' ) {
+              clearInterval(polling);
+              window.location.href = redirectUrl;
+            }
+          },
+          error: function (error) {
+            clearInterval(polling);
+            window.location.reload();
+          }
+        });
+      }, 1000);
+    }
+
+    function modalPayment($iframe) {
+      var orderId = $('input[name=orderid]').val();
+      set_redirection_status(orderId)
+        .then((data) => {
+          if (data.status) {
+            check_order_status(orderId);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+
+    function deletePaymentCard() {
+      $("body").on("click", ".payment-cards .remove", function (e) {
+        e.preventDefault();
+        var selected_card_id = $(this).parent().children('input').attr('id');
+        var selected_card_value = $(this).parent().children('input').val();
+        updatePaymentCards(selected_card_id, selected_card_value);
+      });
+    }
+
+    function updatePaymentCards(selected_card_id, selected_card_value) {
+      $.ajax({
+        url: 'index.php?route=extension/payment/cardlink_iris/deletePaymentCard',
+        type: 'post',
+        data: {
+         selected_card_value: selected_card_value,
+        },
+        dataType: 'json',
+        beforeSend: function() {
+          $('#paytype').before('<div class="attention"><img src="catalog/view/theme/default/image/loading.gif" alt="" /> {{ text_wait }}</div>');
+        },
+        complete: function() {
+          $('.attention').remove();
+        },				
+        success: function(json) {
+           $(".payment-cards").find('#'+selected_card_id).parent().parent().remove();
+        }
+      });
+    }
+
+
+
+    $(document).ready(function () {
+      deletePaymentCard();
+    });
+
+    $('#cardlink_payment').on('submit', function() {
+      var $iframe = $('#payment_iframe');
+      if ($iframe.length > 0) {
+        modalPayment($iframe);
+        $('.cardlink_payment_gateway_woocommerce_modal').fadeIn();
+      }
+    });
+
+    
+
+    $('input[name=cardlink-payment-card-store]').on('change', function() {
+      var ext_value = '';
+      
+      if( $('input[name=cardlink-payment-card-store]').is(':checked') ){
+        $('input[name=extTokenOptions]').val(100);
+        ext_value = 100;
+      }else{
+        $('input[name=extTokenOptions]').val('');
+        $('input[name=extToken]').val('');
+      }
+      
+      calculateDigest(ext_value, null);
+    });
+
+    $("body").on("click", ".payment-cards input", function () {
+      var $newCard = $(".payment-cards-new-card");
+      if ($(this).val() === "new") {
+        $newCard.show();
+        $('input[name=extTokenOptions]').val('');
+        $('input[name=extToken]').val('');
+      } else {
+        $newCard.hide();
+        $newCard.find("input").prop("checked", false);
+        selected_token = $(this).val();
+        ext_value = 110;
+
+        $('input[name=extTokenOptions]').val(110);
+        $('input[name=extToken]').val(selected_token);
+
+        calculateDigest(ext_value, selected_token);
+      }
+
+    });
+
+    function calculateDigest(ext_value, selected_token) {
+      var fields = {};
+
+      $( '#cardlink_payment input[type=hidden]' ).each(function(index, el){
+        fields[$(el).attr('name')] = $(el).val();
+      });
+      //console.log(fields);
+
+      $.ajax({
+        url: 'index.php?route=extension/payment/cardlink_iris/calculateDigest',
+        type: 'post',
+        data: {
+          data_fields: fields, 
+          ext: ext_value,
+          token: selected_token,
+        },
+        dataType: 'json',
+        beforeSend: function() {
+          $('#paytype').before('<div class="attention"><img src="catalog/view/theme/default/image/loading.gif" alt="" /> {{ text_wait }}</div>');
+        },
+        complete: function() {
+          $('.attention').remove();
+        },				
+        success: function(json) {
+           $('input[name=digest]').val(json.digest);
+        }
+      });
+    }
+
+  </script>
+{% endif %}
+
+
+<div class="buttons">
+  <div class="pull-right">
+    <input type="button" onclick="$('#cardlink_payment').submit();" value="{{ button_confirm }}" id="button-confirm" class="btn btn-primary" />
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  $('select').bind('change', function() {
+    $.ajax({
+      url: 'index.php?route=extension/payment/cardlink_iris/index',
+      type: 'post',
+      data: $('#paytype :input'),
+      dataType: 'json',		
+      beforeSend: function() {
+        $('#paytype').before('<div class="attention"><img src="catalog/view/theme/default/image/loading.gif" alt="" /> {{ text_wait }}</div>');
+      },
+      complete: function() {
+        $('.attention').remove();
+      },				
+      success: function(json) {
+        
+        $('#mooid').val(json['mooidval']);
+        $('#mopaytype').val(json['mopaytypeval']);
+        $('#modigest').val(json['modigestval']);
+        $('#moinstal').val(json['moinstalval']);
+        $('#mooffset').val(json['mooffsetval']);
+      
+        
+        if (json['success']) {
+          location = json['success'];
+        }
+      }
+    });
+
+  });
+
+</script>

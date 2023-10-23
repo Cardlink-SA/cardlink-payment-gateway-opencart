@@ -323,11 +323,15 @@ class ControllerExtensionPaymentCardlink extends Controller {
 			isset($_POST['extTokenPanEnd']) ? $emp_extTokenPanEnd = $_POST['extTokenPanEnd'] : $emp_extTokenPanEnd = '';
 			isset($_POST['extTokenExp']) ? $emp_extTokenExp = $_POST['extTokenExp'] : $emp_extTokenExp = '';
 			isset($_POST['digest']) ? $emp_digest = $_POST['digest'] : $emp_digest = '';
+			$xlsbonusdigest = '';
+			if( array_key_exists( 'xlsbonusdigest', $_POST ) ){
+				isset($_POST['xlsbonusdigest']) ? $xlsbonusdigest = $_POST['xlsbonusdigest'] : $xlsbonusdigest = '';
+			}
 			$emp_shared = trim($this->config->get('payment_cardlink_merchantpass'));
 
 			$extTokenExpYear  = substr( $emp_extTokenExp, 0, 4 );
 			$extTokenExpMonth = substr( $emp_extTokenExp, 4, 2 );
-
+/* 
 			$emp_form_data = '';
 			foreach ( $_POST as $k => $v ) {
 				if ( ! in_array( $k, array( 'digest' ) ) ) {
@@ -335,10 +339,41 @@ class ControllerExtensionPaymentCardlink extends Controller {
 				}
 			}
 			$emp_form_data .= $emp_shared;
-
 			$emp_digested = base64_encode(hash('sha256', $emp_form_data,true));
+ */
 
-			if(($emp_digested == $emp_digest) && ($emp_status=='AUTHORIZED' || $emp_status=='CAPTURED')){
+
+			$emp_form_data = '';
+			$emp_form_data_bonus = '';
+			foreach ( $_POST as $k => $v ) {
+				if ( ! in_array( $k, array( '_charset_', 'digest', 'submitButton', 'xlsbonusadjamt', 'xlsbonustxid', 'xlsbonusstatus', 'xlsbonusdetails', 'xlsbonusdigest' ) ) ) {
+					$emp_form_data .= $v;
+				}
+				if ( in_array( $k, array( 'xlsbonusadjamt', 'xlsbonustxid', 'xlsbonusstatus', 'xlsbonusdetails' ) ) ) {
+					$emp_form_data_bonus .= $v;
+				}
+			}		
+
+			$emp_form_data 			.= $emp_shared;
+			$emp_digested 			= base64_encode(hash('sha256', $emp_form_data,true));
+			$emp_form_data_bonus 	.= $emp_shared;
+			$emp_digested_bonus 	= base64_encode(hash('sha256', $emp_form_data_bonus,true));
+
+			$failed = true;
+			if ( $emp_digest == $emp_digested ){
+				$failed = false;
+			}
+			if( $xlsbonusdigest != '' ){
+				if ( $xlsbonusdigest == $emp_digested_bonus ){
+					$failed = false;
+				}else{
+					$failed = true;
+				}
+			}
+
+
+			//if(($emp_digested == $emp_digest) && ($emp_status=='AUTHORIZED' || $emp_status=='CAPTURED')){
+			if( !$failed && ($emp_status=='AUTHORIZED' || $emp_status=='CAPTURED') ){
 		
 				if (isset($emp_orderid)) {
 					$strip_ref = explode("REF",$emp_orderid);
