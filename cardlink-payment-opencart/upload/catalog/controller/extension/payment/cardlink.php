@@ -178,6 +178,10 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		$order_info['payment_postcode'].
 		html_entity_decode($order_info['payment_city']).
 		html_entity_decode($order_info['payment_address_1']).
+		$order_info['shipping_iso_code_2'].
+		$order_info['shipping_postcode'].
+		html_entity_decode($order_info['shipping_city']).
+		html_entity_decode($order_info['shipping_address_1']).
 		$this->session->data['emppaytype'].
 		$this->config->get('payment_cardlink_trtype').
 		$this->session->data['empoffset'].
@@ -204,11 +208,10 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		$data['billZip'] = $order_info['payment_postcode'];
 		$data['billCity'] = html_entity_decode($order_info['payment_city']);
 		$data['billAddress'] = html_entity_decode($order_info['payment_address_1']);
-		$data['shipCountry'] = '';
-		$data['shipState'] = '';
-		$data['shipZip'] = '';
-		$data['shipCity'] = '';
-		$data['shipAddress'] = '';
+		$data['shipCountry'] = $order_info['shipping_iso_code_2'];
+		$data['shipZip'] = $order_info['shipping_postcode'];
+		$data['shipCity'] = html_entity_decode($order_info['shipping_city']);
+		$data['shipAddress'] = html_entity_decode($order_info['shipping_address_1']);
 		$data['payMethod'] = $this->session->data['emppaytype'];
 		$data['trType'] = $this->config->get('payment_cardlink_trtype');
 		$data['extInstallmentoffset'] = $this->session->data['empoffset'];
