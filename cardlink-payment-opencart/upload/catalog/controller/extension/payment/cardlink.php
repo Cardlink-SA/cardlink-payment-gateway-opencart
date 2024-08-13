@@ -25,7 +25,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
 			$html_modal .= '</div>';
 			$html_modal .= '</div>';
 		}
-		$data['target'] = $use_iframe ? 'payment_iframe' : 'top';
+		$data['target'] = $use_iframe ? 'target="payment_iframe"' : '';
 		$data['html_modal'] = $html_modal;
 		$data['use_iframe'] = $use_iframe;
 
