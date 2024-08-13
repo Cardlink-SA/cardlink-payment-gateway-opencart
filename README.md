@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.0.5**
+  - Fix Safari target
 - **1.0.4**
   - Fix Shipping details
 - **1.0.3**
