@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.1.0**
+  - IRIS Support
 - **1.0.5**
   - Fix Safari target
 - **1.0.4**
@@ -46,6 +48,10 @@ Once you have completed the requested tests and any changes to your website, you
 
 
 ## Installation
+
+Firstly, find the plugins in the "INSTALL" folder. 
+cardlink-payment-opencart.ocmod.zip
+cardlink-payment-opencart-iris.ocmod.zip
 
 From your administration, go to ``Extensions > Installer`` and click on the ``Upload`` button.
 
