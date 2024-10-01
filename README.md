@@ -46,6 +46,16 @@ Once you have completed the requested tests and any changes to your website, you
 9. A text field for providing the absolute or relative (to Cardlink Payment Gateway location on server) URL of custom CSS stylesheet, to apply custom CSS styles in the payment page.
 10. Translation ready for Greek & English languages.
 
+## Features (IRIS)
+
+1. A dropdown option for instance Nexi (only for now).
+2. Option to enable test environment (sandbox). All transactions will be re-directed to the endpoint that represents the production environment by default.
+3. Field for Merchand ID.
+4. Field for Shared Secret Key.
+5. Field for IRIS customer code.
+6. Choose a custom title for payment method.
+7. Option to set different order statuses for transactions with a captured or authorized payment.
+8. Translation ready for Greek & English languages.
 
 ## Installation
 
@@ -68,6 +78,8 @@ Find the ``Cardlink`` extension and click on the green icon on the right with th
 
 1. The Cardlink Payment Gateway admin page used to configure the settings (``Extensions > Extensions > Payments > Cardlink > Edit``).
 ![image003](https://developer.cardlink.gr/downloads/cardlink-payment-gateway-opencart-assets/image003.png) 
+1. The Cardlink Payment Gateway IRIS admin page used to configure the settings (``Extensions > Extensions > Payments > Cardlink Iris > Edit``).
+![image005](https://developer.cardlink.gr/downloads/cardlink-payment-gateway-opencart-assets/image005.png) 
 3. This is the front-end of Cardlink Payment Gateway plugin located in checkout page.
 ![image005](https://developer.cardlink.gr/downloads/cardlink-payment-gateway-opencart-assets/image004.png)
 
