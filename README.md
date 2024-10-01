@@ -54,8 +54,9 @@ Once you have completed the requested tests and any changes to your website, you
 4. Field for Shared Secret Key.
 5. Field for IRIS customer code.
 6. Choose a custom title for payment method.
-7. Option to set different order statuses for transactions with a captured or authorized payment.
+7. Option to set different order statuses for transactions with a captured payment.
 8. Translation ready for Greek & English languages.
+9. Not supporting iframe. Supporting only redirect method.
 
 ## Installation
 
