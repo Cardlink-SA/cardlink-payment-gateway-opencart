@@ -169,8 +169,8 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		}
 		$billing_state = '';
 
-		$confirmUrl = $this->config->get('config_ssl') . 'index.php?route=extension/payment/cardlink/callback/success';
-		$cancelUrl = $this->config->get('config_ssl') . 'index.php?route=extension/payment/cardlink/callback/fail';
+		$confirmUrl = $this->url->link('extension/payment/cardlink/callback/success', '', true);
+		$cancelUrl = $this->url->link('extension/payment/cardlink/callback/fail', '', true);
 		
 		$digeststring = '2'.trim($this->config->get('payment_cardlink_merchantid')).$cardlink_language.'0'.$orderid.$trdesc.$cardlink_total.'EUR'.$order_info['email'].$cphone.
 		$order_info['payment_iso_code_2'].

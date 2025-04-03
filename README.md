@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.1.1**
+  - Fix confirm and fail urls
 - **1.1.0**
   - IRIS Support
 - **1.0.5**
