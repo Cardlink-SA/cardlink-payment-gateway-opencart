@@ -49,9 +49,7 @@
             <label class="col-sm-2 control-label" for="input-acquirer">{{ entry_acquirer }}</label>
             <div class="col-sm-10">
               <select name="payment_cardlink_iris_acquirer" id="input-acquirer" class="form-control">
-                <option value="1" selected="selected">Nexi</option>
-                
- 				       {#  {% if payment_cardlink_iris_acquirer == 0 %}
+ 				        {% if payment_cardlink_iris_acquirer == 0 %}
                 <option value="0" selected="selected">Cardlink</option>
                 {% else %}
                 <option value="0">Cardlink</option>
@@ -65,7 +63,7 @@
                 <option value="2" selected="selected">Worldline</option>
                 {% else %}
                 <option value="2">Worldline</option>
-                {% endif %} #}
+                {% endif %}
               </select>
             </div>
           </div>
@@ -90,7 +88,7 @@
             </div>
           </div>
 
-          <div class="form-group required">
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-rf_payment_code">{{ entry_rf_payment_code }}</label>
             <div class="col-sm-10">
               <input type="text" name="payment_cardlink_iris_rf_payment_code" value="{{ payment_cardlink_iris_rf_payment_code }}" id="input-rf_payment_code" class="form-control" />

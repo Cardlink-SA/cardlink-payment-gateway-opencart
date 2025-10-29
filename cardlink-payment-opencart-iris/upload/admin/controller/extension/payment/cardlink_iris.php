@@ -320,9 +320,9 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 			$this->error['merchantpass'] = $this->language->get('error_merchantpass');
 		}
 		
-		if (!$this->request->post['payment_cardlink_iris_rf_payment_code']) {
+		/* if (!$this->request->post['payment_cardlink_iris_rf_payment_code']) {
 			$this->error['rf_payment_code'] = $this->language->get('error_rf_payment_code');
-		}
+		} */
 		
 		if (!$this->request->post['payment_cardlink_iris_title']) {
 			$this->error['title'] = $this->language->get('error_title');

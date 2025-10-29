@@ -45,8 +45,12 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		$ref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 		$order_id = substr($this->config->get('order_id') . $ref, 0, 50);
 		
-		$trdesc = $this->get_rf_code( $order_id, $order_info['total'] );
-		//$trdesc = mb_substr($trdesc,0,128,'UTF-8');
+		if($payment_cardlink_iris_acquirer == 1){
+			$trdesc = $this->get_rf_code( $order_id, $order_info['total'] );
+		}else{
+			$trdesc = 'Opencart order';
+			$trdesc = mb_substr($trdesc,0,128,'UTF-8');
+		}
 		
 		if(!isset($order_info['payment_iso_code_2']) || $order_info['payment_iso_code_2']==''){
 		 	$order_info['payment_iso_code_2']='GR';
@@ -60,8 +64,8 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		}
 		$billing_state = '';
 
-		$confirmUrl = $this->url->link('extension/payment/cardlink_iris/callback/success', '', true);
-		$cancelUrl = $this->url->link('extension/payment/cardlink_iris/callback/fail', '', true);
+		$confirmUrl = $this->url->link('extension/payment/cardlink_iris/callback/success'. session_id(), '', true);
+		$cancelUrl = $this->url->link('extension/payment/cardlink_iris/callback/fail'. session_id(), '', true);
 		
 		$digeststring = '2'.trim($this->config->get('payment_cardlink_iris_merchantid')).$cardlink_language.'0'.$order_id.$trdesc.$cardlink_total.'EUR'.$order_info['email'].$cphone.
 		$order_info['payment_iso_code_2'].
@@ -198,7 +202,16 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 				$this->session->data['error'] = $this->language->get('error_declined');
 				$this->redirect((isset($this->session->data['guest'])) ? $this->url->link('checkout/cart', '', 'SSL') : $this->url->link('checkout/cart', '', 'SSL')); 
 				*/
-				$data['continue'] = $this->url->link('checkout/cart');
+				//$data['continue'] = $this->url->link('checkout/cart');
+
+				if (isset($this->request->get['session_id'])) {
+					session_write_close();
+					session_id($this->request->get['session_id']);
+					session_start();
+				}
+				$this->session->data['error'] = $this->language->get('error_declined');
+				$this->response->redirect($this->url->link('checkout/cart', '', true));
+				return;
 
 				$this->response->setOutput($this->load->view('extension/payment/cardlink_iris_failure', $data));
 

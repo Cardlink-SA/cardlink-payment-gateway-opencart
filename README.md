@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.1.2**
+  - IRIS for all acquirers
 - **1.1.1**
   - Fix confirm and fail urls
 - **1.1.0**

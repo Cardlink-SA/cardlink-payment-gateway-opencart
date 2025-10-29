@@ -169,8 +169,8 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		}
 		$billing_state = '';
 
-		$confirmUrl = $this->url->link('extension/payment/cardlink/callback/success', '', true);
-		$cancelUrl = $this->url->link('extension/payment/cardlink/callback/fail', '', true);
+		$confirmUrl = $this->url->link('extension/payment/cardlink/callback/success'. session_id(), '', true);
+		$cancelUrl = $this->url->link('extension/payment/cardlink/callback/fail'. session_id(), '', true);
 		
 		$digeststring = '2'.trim($this->config->get('payment_cardlink_merchantid')).$cardlink_language.'0'.$orderid.$trdesc.$cardlink_total.'EUR'.$order_info['email'].$cphone.
 		$order_info['payment_iso_code_2'].
@@ -300,7 +300,16 @@ class ControllerExtensionPaymentCardlink extends Controller {
 				$this->session->data['error'] = $this->language->get('error_declined');
 				$this->redirect((isset($this->session->data['guest'])) ? $this->url->link('checkout/cart', '', 'SSL') : $this->url->link('checkout/cart', '', 'SSL')); 
 				*/
-				$data['continue'] = $this->url->link('checkout/cart');
+				//$data['continue'] = $this->url->link('checkout/cart');
+
+				if (isset($this->request->get['session_id'])) {
+					session_write_close();
+					session_id($this->request->get['session_id']);
+					session_start();
+				}
+				$this->session->data['error'] = $this->language->get('error_declined');
+				$this->response->redirect($this->url->link('checkout/cart', '', true));
+				return;
 
 				$this->response->setOutput($this->load->view('extension/payment/cardlink_failure', $data));
 
@@ -334,7 +343,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
 
 			$extTokenExpYear  = substr( $emp_extTokenExp, 0, 4 );
 			$extTokenExpMonth = substr( $emp_extTokenExp, 4, 2 );
-/* 
+			/* 
 			$emp_form_data = '';
 			foreach ( $_POST as $k => $v ) {
 				if ( ! in_array( $k, array( 'digest' ) ) ) {
@@ -343,7 +352,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
 			}
 			$emp_form_data .= $emp_shared;
 			$emp_digested = base64_encode(hash('sha256', $emp_form_data,true));
- */
+ 			*/
 
 
 			$emp_form_data = '';
