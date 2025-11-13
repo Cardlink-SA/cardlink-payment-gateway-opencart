@@ -10,6 +10,9 @@
 
 ## Changelog
 
+- **1.1.3**
+  - Remove IRIS customer code field
+  - Bug fix: success & return url
 - **1.1.2**
   - IRIS for all acquirers
 - **1.1.1**

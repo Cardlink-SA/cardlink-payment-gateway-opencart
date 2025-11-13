@@ -43,14 +43,9 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		$cardlink_total = number_format($cardlink_total_eur, 2, ',', '');	
 		
 		$ref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
-		$order_id = substr($this->config->get('order_id') . $ref, 0, 50);
-		
-		if($payment_cardlink_iris_acquirer == 1){
-			$trdesc = $this->get_rf_code( $order_id, $order_info['total'] );
-		}else{
-			$trdesc = 'Opencart order';
-			$trdesc = mb_substr($trdesc,0,128,'UTF-8');
-		}
+		$order_id = substr($this->session->data['order_id'] . $ref, 0, 50);
+		$trdesc = 'Opencart order';
+		$trdesc = mb_substr($trdesc,0,128,'UTF-8');
 		
 		if(!isset($order_info['payment_iso_code_2']) || $order_info['payment_iso_code_2']==''){
 		 	$order_info['payment_iso_code_2']='GR';
@@ -108,38 +103,6 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		return $this->load->view('extension/payment/cardlink_iris', $data);
 	}
 
-	public function get_rf_code( $order_id, $order_total ) {
-/* 		$rf_payment_code = get_post_meta( $order_id, 'rf_payment_code', true );
-		if ( $rf_payment_code !== '' ) {
-		   return $rf_payment_code;
-		} */
-
-		/* calculate payment check code */
-		$paymentSum = 0;
-		if ( $order_total > 0 ) {
-		   $ordertotal = str_replace( [ ',' ], '.', (string) $order_total );
-		   $ordertotal = number_format( $ordertotal, 2, '', '' );
-		   $ordertotal = strrev( $ordertotal );
-		   $factor     = [ 1, 7, 3 ];
-		   $idx        = 0;
-		   for ( $i = 0; $i < strlen( $ordertotal ); $i ++ ) {
-			  $idx        = $idx <= 2 ? $idx : 0;
-			  $paymentSum += $ordertotal[ $i ] * $factor[ $idx ];
-			  $idx ++;
-		   }
-		}
-		$randomNumber 	 = $this->generateRandomString( 13, time() );
-		$paymentCode  	 = $paymentSum ? ( $paymentSum % 8 ) : '8';
-		$systemCode   	 = '12';
-		$tempCode     	 = $this->config->get('payment_cardlink_iris_rf_payment_code') . $paymentCode . $systemCode . $randomNumber . '271500';		
-		$mod97        	 = bcmod( $tempCode, '97' );
-		$cd           	 = 98 - (int) $mod97;
-		$cd              = str_pad( (string) $cd, 2, '0', STR_PAD_LEFT );
-		$rf_payment_code = 'RF' . $cd . $this->config->get('payment_cardlink_iris_rf_payment_code') . $paymentCode . $systemCode . $randomNumber;
-		
-		return $rf_payment_code;
-	}
-
 	public function generateRandomString( $length = 22, $order_id = 0 ) {
 		return str_pad( $order_id, $length, '0', STR_PAD_LEFT );
 	}
@@ -190,7 +153,7 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 				
 				$this->load->model('checkout/order');				
 				$order_info = $this->model_checkout_order->getOrder($order_id);
-				
+								
 				if(!$this->customer->isLogged() && $order_info['customer_id']!=0){
 					$email_query = $this->db->query("SELECT email FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
 					if ($email_query->num_rows){

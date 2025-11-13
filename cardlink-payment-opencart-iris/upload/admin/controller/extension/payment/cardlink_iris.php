@@ -51,7 +51,6 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		$data['help_total'] = $this->language->get('help_total');
 		$data['entry_merchantid'] = $this->language->get('entry_merchantid');
 		$data['entry_merchantpass'] = $this->language->get('entry_merchantpass');
-		$data['entry_rf_payment_code'] = $this->language->get('entry_rf_payment_code');
 		$data['entry_url_gateway'] = $this->language->get('entry_url_gateway');	
 		$data['entry_url_success'] = $this->language->get('entry_url_success');
 		$data['entry_url_fail'] = $this->language->get('entry_url_fail');
@@ -89,12 +88,6 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 			$data['error_merchantpass'] = $this->error['merchantpass'];
 		} else {
 			$data['error_merchantpass'] = '';
-		}
-		
-		if (isset($this->error['rf_payment_code'])) {
-			$data['error_rf_payment_code'] = $this->error['rf_payment_code'];
-		} else {
-			$data['error_rf_payment_code'] = '';
 		}
 		
 		if (isset($this->error['title'])) {
@@ -159,12 +152,6 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 			$data['payment_cardlink_iris_merchantpass'] = $this->request->post['payment_cardlink_iris_merchantpass'];
 		} else {
 			$data['payment_cardlink_iris_merchantpass'] = $this->config->get('payment_cardlink_iris_merchantpass');
-		}
-
-		if (isset($this->request->post['payment_cardlink_iris_rf_payment_code'])) {
-			$data['payment_cardlink_iris_rf_payment_code'] = $this->request->post['payment_cardlink_iris_rf_payment_code'];
-		} else {
-			$data['payment_cardlink_iris_rf_payment_code'] = $this->config->get('payment_cardlink_iris_rf_payment_code');
 		}
 		
 		if (isset($this->request->post['payment_cardlink_iris_title'])) {
@@ -319,10 +306,6 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		if (!$this->request->post['payment_cardlink_iris_merchantpass']) {
 			$this->error['merchantpass'] = $this->language->get('error_merchantpass');
 		}
-		
-		/* if (!$this->request->post['payment_cardlink_iris_rf_payment_code']) {
-			$this->error['rf_payment_code'] = $this->language->get('error_rf_payment_code');
-		} */
 		
 		if (!$this->request->post['payment_cardlink_iris_title']) {
 			$this->error['title'] = $this->language->get('error_title');
