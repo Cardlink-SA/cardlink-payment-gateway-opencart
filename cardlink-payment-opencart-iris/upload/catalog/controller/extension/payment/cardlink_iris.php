@@ -44,7 +44,7 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 		
 		$ref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 		$order_id = substr($this->session->data['order_id'] . $ref, 0, 50);
-		$trdesc = 'Opencart order';
+		$trdesc = 'Order #' . $this->session->data['order_id'];
 		$trdesc = mb_substr($trdesc,0,128,'UTF-8');
 		
 		if(!isset($order_info['payment_iso_code_2']) || $order_info['payment_iso_code_2']==''){

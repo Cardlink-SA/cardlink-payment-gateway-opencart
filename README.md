@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.1.4**
+  - Fix Order description
 - **1.1.3**
   - Remove IRIS customer code field
   - Bug fix: success & return url
@@ -42,7 +44,7 @@ Once you have completed the requested tests and any changes to your website, you
 
 ## Features
 
-1. A dropdown option for instance between Worldline, Nexi και Cardlink.
+1. A dropdown option for instance between Worldline, Nexi and Cardlink.
 2. Option to enable test environment (sandbox). All transactions will be re-directed to the endpoint that represents the production environment by default. The endpoint will be different depending on which acquirer has been chosen from instance dropdown option.
 3. Choose a custom title for payment method.
 4. Ability to define the ranges of the total order amounts and the maximum number of installments for each range.
@@ -55,7 +57,7 @@ Once you have completed the requested tests and any changes to your website, you
 
 ## Features (IRIS)
 
-1. A dropdown option for instance Nexi (only for now).
+1. A dropdown option for instance between Worldline, Nexi and Cardlink.
 2. Option to enable test environment (sandbox). All transactions will be re-directed to the endpoint that represents the production environment by default.
 3. Field for Merchand ID.
 4. Field for Shared Secret Key.

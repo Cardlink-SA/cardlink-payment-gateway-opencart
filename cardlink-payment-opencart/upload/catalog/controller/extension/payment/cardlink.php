@@ -153,9 +153,8 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		$ref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 		$orderid = substr($this->session->data['order_id'] . $ref, 0, 50);
 		
-		
-		$trdesc = 'Opencart order';
-		$trdesc = mb_substr($trdesc,0,128,'UTF-8');
+		$trdesc = $this->session->data['order_id'];
+		$trdesc = 'Order #' . $this->session->data['order_id'];
 		
 		if(!isset($order_info['payment_iso_code_2']) || $order_info['payment_iso_code_2']==''){
 		 	$order_info['payment_iso_code_2']='GR';
