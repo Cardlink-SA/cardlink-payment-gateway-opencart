@@ -11,9 +11,9 @@
 ## Changelog
 
 - **1.1.4**
-  - Fix Order description
+  - Fix Order description (If you already use IRIS with your own seller id, DO NOT install the new version!)
 - **1.1.3**
-  - Remove IRIS customer code field
+  - Remove IRIS customer code field. (If you already use IRIS with your own seller id, DO NOT install the new version!)
   - Bug fix: success & return url
 - **1.1.2**
   - IRIS for all acquirers
