@@ -10,8 +10,12 @@
 
 ## Changelog
 
+- **1.2.0**
+  - Added support for Cardlink's Background confirmation service.
+  - Added support for XML API operations (Capture, Refund, Void, Status) within order page.
+  - Plugin refactor: modernised, namespaced codebase with cleaner separation between gateway, admin, and checkout layers.
 - **1.1.4**
-  - Fix Order description (If you already use IRIS with your own seller id, DO NOT install the new version!)
+  - Fix Order description. (If you already use IRIS with your own seller id, DO NOT install the new version!)
 - **1.1.3**
   - Remove IRIS customer code field. (If you already use IRIS with your own seller id, DO NOT install the new version!)
   - Bug fix: success & return url
@@ -51,27 +55,16 @@ Once you have completed the requested tests and any changes to your website, you
 5. Option for pre-authorization or sale transactions.
 6. Option to set different order statuses for transactions with a captured or authorized payment.
 7. Option for a user tokenization service. The card token will be stored at the merchant’s e-shop database and will be used by customers to auto-complete future payments. 
-8. In-store checkout option: the merchant can configure the payment process to take place inside a pop up with IFRAME to mask the redirection process from the customers.
+8. In-store checkout option: the merchant can configure the payment process to take place inside a pop up with IFRAME to mask the redirection process from the customers. (The IRIS payments does not support the iframe feature).
 9. A text field for providing the absolute or relative (to Cardlink Payment Gateway location on server) URL of custom CSS stylesheet, to apply custom CSS styles in the payment page.
 10. Translation ready for Greek & English languages.
-
-## Features (IRIS)
-
-1. A dropdown option for instance between Worldline, Nexi and Cardlink.
-2. Option to enable test environment (sandbox). All transactions will be re-directed to the endpoint that represents the production environment by default.
-3. Field for Merchand ID.
-4. Field for Shared Secret Key.
-5. Field for IRIS customer code.
-6. Choose a custom title for payment method.
-7. Option to set different order statuses for transactions with a captured payment.
-8. Translation ready for Greek & English languages.
-9. Not supporting iframe. Supporting only redirect method.
+11.	IRIS payments. Upon installation, an extra payment is created. (The IRIS payments does not support the iframe feature).
+12. Secondary actions now available using our CMS plugin (Capture of preauth, Refund, Void, Status Request).
 
 ## Installation
 
 Firstly, find the plugins in the "INSTALL" folder. 
 cardlink-payment-opencart.ocmod.zip
-cardlink-payment-opencart-iris.ocmod.zip
 
 From your administration, go to ``Extensions > Installer`` and click on the ``Upload`` button.
 

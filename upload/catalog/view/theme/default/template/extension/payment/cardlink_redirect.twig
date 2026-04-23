@@ -1,0 +1,44 @@
+<form action="{{ action }}" method="post" id="cardlink_form">
+  <input type="hidden" name="version" value="{{ version }}">
+  <input type="hidden" name="mid" value="{{ mid }}">
+  <input type="hidden" name="lang" value="{{ lang }}">
+  <input type="hidden" name="deviceCategory" value="{{ deviceCategory }}">
+  <input type="hidden" name="orderid" value="{{ orderid }}">
+  <input type="hidden" name="orderDesc" value="{{ orderDesc }}">
+  <input type="hidden" name="orderAmount" value="{{ orderAmount }}">
+  <input type="hidden" name="currency" value="{{ currency }}">
+  <input type="hidden" name="payerEmail" value="{{ payerEmail }}">
+  <input type="hidden" name="payerPhone" value="{{ payerPhone }}">
+  <input type="hidden" name="billCountry" value="{{ billCountry }}">
+  <input type="hidden" name="billState" value="{{ billState }}">
+  <input type="hidden" name="billZip" value="{{ billZip }}">
+  <input type="hidden" name="billCity" value="{{ billCity }}">
+  <input type="hidden" name="billAddress" value="{{ billAddress }}">
+  <input type="hidden" name="shipCountry" value="{{ shipCountry }}">
+  <input type="hidden" name="shipZip" value="{{ shipZip }}">
+  <input type="hidden" name="shipCity" value="{{ shipCity }}">
+  <input type="hidden" name="shipAddress" value="{{ shipAddress }}">
+  <input type="hidden" name="payMethod" value="{{ payMethod }}">
+  <input type="hidden" name="trType" value="{{ trType }}">
+  <input type="hidden" name="extInstallmentoffset" value="{{ extInstallmentoffset }}">
+  <input type="hidden" name="extInstallmentperiod" value="{{ extInstallmentperiod }}">
+  <input type="hidden" name="extRecurringfrequency" value="{{ extRecurringfrequency }}">
+  <input type="hidden" name="extRecurringenddate" value="{{ extRecurringenddate }}">
+  <input type="hidden" name="cssUrl" value="{{ cssUrl }}">
+  <input type="hidden" name="confirmUrl" value="{{ confirmUrl }}">
+  <input type="hidden" name="cancelUrl" value="{{ cancelUrl }}">
+  <input type="hidden" name="extTokenOptions" value="{{ extTokenOptions }}">
+  <input type="hidden" name="extToken" value="{{ extToken }}">
+  <input type="hidden" name="var1" value="{{ var1 }}">
+  <input type="hidden" name="var2" value="{{ var2 }}">
+  <input type="hidden" name="var3" value="{{ var3 }}">
+  <input type="hidden" name="var4" value="{{ var4 }}">
+  <input type="hidden" name="var5" value="{{ var5 }}">
+  <input type="hidden" name="digest" value="{{ digest }}">
+
+  <button type="submit" id="cardlink_submit">{{ text_continue }}</button>
+</form>
+
+<script>
+  document.getElementById('cardlink_form').submit();
+</script>

@@ -1,0 +1,9 @@
+<form id="cardlink_iris_form" action="{{ action }}" method="post">
+  {% for key, value in payload %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+  {% endfor %}
+</form>
+
+<script>
+  document.getElementById('cardlink_iris_form').submit();
+</script>

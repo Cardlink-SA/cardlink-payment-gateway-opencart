@@ -1,0 +1,314 @@
+<div id="cardlink-container" align="right">
+
+  <form id="cardlink_form" action="{{ action }}" method="post" target="payment_iframe">
+    <input type="hidden" name="version" value="{{ version }}">
+    <input type="hidden" name="mid" value="{{ mid }}">
+    <input type="hidden" name="lang" value="{{ lang }}">
+    <input type="hidden" name="deviceCategory" value="{{ deviceCategory }}">
+    <input type="hidden" name="orderid" value="{{ orderid }}">
+    <input type="hidden" name="orderDesc" value="{{ orderDesc }}">
+    <input type="hidden" name="orderAmount" value="{{ orderAmount }}">
+    <input type="hidden" name="currency" value="{{ currency }}">
+    <input type="hidden" name="payerEmail" value="{{ payerEmail }}">
+    <input type="hidden" name="payerPhone" value="{{ payerPhone }}">
+    <input type="hidden" name="billCountry" value="{{ billCountry }}">
+    <input type="hidden" name="billState" value="{{ billState }}">
+    <input type="hidden" name="billZip" value="{{ billZip }}">
+    <input type="hidden" name="billCity" value="{{ billCity }}">
+    <input type="hidden" name="billAddress" value="{{ billAddress }}">
+    <input type="hidden" name="shipCountry" value="{{ shipCountry }}">
+    <input type="hidden" name="shipZip" value="{{ shipZip }}">
+    <input type="hidden" name="shipCity" value="{{ shipCity }}">
+    <input type="hidden" name="shipAddress" value="{{ shipAddress }}">
+    <input type="hidden" name="payMethod" value="{{ payMethod }}">
+    <input type="hidden" name="trType" value="{{ trType }}">
+    <input type="hidden" name="extInstallmentoffset" value="{{ extInstallmentoffset }}">
+    <input type="hidden" name="extInstallmentperiod" value="{{ extInstallmentperiod }}">
+    <input type="hidden" name="extRecurringfrequency" value="{{ extRecurringfrequency }}">
+    <input type="hidden" name="extRecurringenddate" value="{{ extRecurringenddate }}">
+    <input type="hidden" name="cssUrl" value="{{ cssUrl }}">
+    <input type="hidden" name="confirmUrl" value="{{ confirmUrl }}">
+    <input type="hidden" name="cancelUrl" value="{{ cancelUrl }}">
+    <input type="hidden" name="extTokenOptions" value="{{ extTokenOptions }}">
+    <input type="hidden" name="extToken" value="{{ extToken }}">
+    <input type="hidden" name="var1" value="{{ var1 }}">
+    <input type="hidden" name="var2" value="{{ var2 }}">
+    <input type="hidden" name="var3" value="{{ var3 }}">
+    <input type="hidden" name="var4" value="{{ var4 }}">
+    <input type="hidden" name="var5" value="{{ var5 }}">
+    <input type="hidden" name="digest" value="{{ digest }}">
+
+    <!-- hidden inputs για tokenization -->
+    <input type="hidden" name="saved_card" id="saved_card" value="">
+    <input type="hidden" name="store_card" id="store_card" value="0">
+    <input type="hidden" name="installments" id="installments" value="0">
+  </form>
+
+  {% if tokenization_enabled == '1' and customer_logged %}
+  <div class="form-group payment-cards">
+    <strong>{{ text_select_card }}</strong>
+
+    {% if saved_cards %}
+      {% for card in saved_cards %}
+        <div class="radio saved-card" data-token="{{ card.token }}">
+          <label>
+            <input type="radio" name="saved_card" value="{{ card.token }}" />
+            **** {{ card.pan_end }}
+          </label>
+
+          <button
+            type="button"
+            class="btn btn-link btn-remove-card"
+            data-token="{{ card.token }}"
+            title="{{ text_delete_card|default('Delete card') }}"
+          >
+            ✕
+          </button>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>{{ text_new_card }}</p>
+    {% endif %}
+
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="store_card" value="1" />
+        {{ text_store_card }}
+      </label>
+    </div>
+  </div>
+{% endif %}
+
+
+  {% if installment_options %}
+    <div class="form-group">
+      <label for="input-installments">{{ text_instalments }}</label>
+      <select name="installments" id="input-installments">
+        <option value="0">{{ text_instalments_no }}</option>
+        {% for option in installment_options %}
+          <option value="{{ option.value }}">{{ option.text }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+
+  <div class="buttons">
+    <div class="pull-right">
+      <button id="cardlink-pay-btn" class="btn btn-primary">{{ button_confirm }}</button>
+    </div>
+  </div>
+
+</div>
+
+{% if use_iframe %}
+  <div id="cardlink-iframe-modal" class="cardlink-modal">
+    <div class="cardlink-modal__backdrop"></div>
+    <div class="cardlink-modal__box">
+      <button id="cardlink-modal-close" class="cardlink-modal__close">×</button>
+      <iframe id="payment_iframe" name="payment_iframe" width="100%" height="850" frameborder="0"></iframe>
+    </div>
+  </div>
+{% endif %}
+
+
+<script>
+$(function(){
+
+  $('#cardlink-pay-btn').on('click', function(e){
+      e.preventDefault();
+
+      var saved_card = $('input[name="saved_card"]:checked').val() || '';
+      var installments = $('#input-installments').val() || '';
+      var store_card = $('input[name="store_card"]').is(':checked') ? '1' : '0';
+
+      $.ajax({
+          url: 'index.php?route=extension/payment/cardlink/confirm',
+          type: 'post',
+          data: {
+              saved_card: saved_card,
+              installments: installments,
+              store_card: store_card
+          },
+          dataType: 'json',
+          success: function(json){
+
+              if (!json || !json.action) {
+                  alert('Payment error');
+                  return;
+              }
+
+              // if iframe
+              if (json.iframe == '1') {
+
+                  // show modal
+                  $('#cardlink-iframe-modal').fadeIn();
+
+                  var form = $('<form>', {
+                      method: 'post',
+                      action: json.action,
+                      target: 'payment_iframe'
+                  });
+
+                  $.each(json, function(key, value){
+                      if (key === 'action' || key === 'iframe') return;
+                      form.append($('<input>', {
+                          type: 'hidden',
+                          name: key,
+                          value: value
+                      }));
+                  });
+
+                  $('body').append(form);
+                  form.submit();
+              }
+              else {
+                  // redirect (non-iframe)
+                  var form = $('<form>', {
+                      method: 'post',
+                      action: json.action
+                  });
+
+                  $.each(json, function(key, value){
+                      if (key === 'action' || key === 'iframe') return;
+                      form.append($('<input>', {
+                          type: 'hidden',
+                          name: key,
+                          value: value
+                      }));
+                  });
+
+                  $('body').append(form);
+                  form.submit();
+              }
+          }
+      });
+  });
+
+  $('#cardlink-modal-close, .cardlink-modal__backdrop').on('click', function(){
+      $('#cardlink-iframe-modal').fadeOut();
+  });
+
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.action === 'cardlink_close_iframe') {
+      $('#cardlink-iframe-modal').fadeOut();
+
+      if (event.data.status === 'success') {
+        window.location.href = 'index.php?route=checkout/success';
+      } else {
+        window.location.href = 'index.php?route=checkout/checkout';
+      }
+    }
+  });
+
+});
+
+$('input[name="saved_card"]').on('click', function() {
+    if ($(this).data('waschecked') === true) {
+        $(this).prop('checked', false);
+        $(this).data('waschecked', false);
+    } else {
+        $('input[name="saved_card"]').data('waschecked', false);
+        $(this).data('waschecked', true);
+    }
+});
+
+$(document).on('click', '.btn-remove-card', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    var $btn = $(this);
+    var token = $btn.data('token');
+    var $cardRow = $btn.closest('.saved-card');
+
+    if (!token) return;
+
+    if (!confirm('Να διαγραφεί η αποθηκευμένη κάρτα;')) {
+        return;
+    }
+
+    $.ajax({
+        url: 'index.php?route=extension/payment/cardlink/deleteToken',
+        type: 'post',
+        data: { token: token },
+        dataType: 'json',
+        success: function (json) {
+            if (json.success) {
+
+                // αν ήταν selected → unselect
+                var radio = $cardRow.find('input[type="radio"]');
+                if (radio.is(':checked')) {
+                    radio.prop('checked', false);
+                    radio.data('waschecked', false);
+                }
+
+                // remove από UI
+                $cardRow.fadeOut(200, function () {
+                    $(this).remove();
+
+                    // αν δεν έμεινε καμία κάρτα
+                    if ($('.saved-card').length === 0) {
+                        $('.payment-cards').append(
+                            '<p>' + (json.text_new_card || 'Χρησιμοποίησε νέα κάρτα') + '</p>'
+                        );
+                    }
+                });
+            } else {
+                alert(json.error || 'Αποτυχία διαγραφής κάρτας');
+            }
+        },
+        error: function () {
+            alert('Σφάλμα επικοινωνίας με τον server');
+        }
+    });
+});
+
+</script>
+
+<style>
+.cardlink-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.cardlink-modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+
+.cardlink-modal__box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  max-width: 1200px;
+  height: 850px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cardlink-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.btn-remove-card{
+  padding: 0px 5px;
+}
+</style>
