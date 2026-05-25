@@ -210,8 +210,7 @@ class ModelExtensionPaymentCardlinkCommon extends Model {
     }
 
     private function formatAmount($amount): int {
-        return $amount;
-        //return (int)round($amount * 100);
+        return number_format((float)$amount, 2, '.', '');
     }
 
     public function restoreCartFromOrder($order_id) {
