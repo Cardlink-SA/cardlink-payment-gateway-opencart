@@ -209,7 +209,7 @@ class ModelExtensionPaymentCardlinkCommon extends Model {
         ][$acquirer] ?? '';
     }
 
-    private function formatAmount($amount): int {
+    private function formatAmount($amount): string {
         return number_format((float)$amount, 2, '.', '');
     }
 
