@@ -10,6 +10,8 @@
 
 ## Changelog
 
+- **1.2.1**
+  - Fix total ammount.
 - **1.2.0**
   - Added support for Cardlink's Background confirmation service.
   - Added support for XML API operations (Capture, Refund, Void, Status) within order page.
