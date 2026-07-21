@@ -196,6 +196,22 @@
           </div>
 
           <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-failed-order-status">{{ entry_failed_order_status }}</label>
+            <div class="col-sm-10">
+              <select name="payment_cardlink_failed_order_status" id="input-failed-order-status" class="form-control">
+                {% for order_status in order_statuses %}
+                {% if order_status['order_status_id'] == payment_cardlink_failed_order_status %}
+                <option value="{{ order_status['order_status_id'] }}" selected="selected">{{ order_status['name'] }}</option>
+                {% else %}
+                <option value="{{ order_status['order_status_id'] }}">{{ order_status['name'] }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              <small class="text-muted">{{ text_failed_order_status_note }}</small>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-xml-api">{{ entry_xml_api }}</label>
             <div class="col-sm-10">
               <select name="payment_cardlink_xml_api" id="input-xml-api" class="form-control">

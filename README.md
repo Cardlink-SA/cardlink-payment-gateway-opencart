@@ -10,6 +10,9 @@
 
 ## Changelog
 
+- **1.2.2**
+  - Order Status (Failed / Cancelled) admin field
+  - Disable email notification on failed transaction
 - **1.2.1**
   - Fix total amount.
 - **1.2.0**
@@ -77,6 +80,20 @@ Find it and select it through the popup file browser. Once the module’s ``ocmo
 
 After the success uploading go to ``Extensions > Extensions`` and filter the extensions by ``Payment``.
 Find the ``Cardlink`` extension and click on the green icon on the right with the plus icon. 
+
+## Secondary Transactions
+
+Secondary actions now available using our CMS plugin (Capture of preauth, Refund,
+Void, Status Request).
+From the plugin dashboard, you can enable the capability to complete secondary
+transactions via XML API without leaving the plugin.
+*A request to enable the XML channel for secondary transactions on Cardlink must be
+submitted for your MID, and the plugin must be activated for it (Capture of preauth,
+Refund, Void).
+**Regarding preauthorization transactions, within the order, there is the option for
+Partial or Full Capture of preauth (completing the pre-approved amount) directly from
+the transactions page:
+
 
 
 ## Screenshots

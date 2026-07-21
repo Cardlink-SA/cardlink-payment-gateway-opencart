@@ -48,11 +48,12 @@ class ControllerExtensionPaymentCardlinkIris extends Controller {
 
 		$fields = [
 			'mode','acquirer','merchantid','merchantpass','title',
-			'order_status','url_success','url_fail','status','sort_order'
+			'order_status','failed_order_status','url_success','url_fail','status','sort_order'
 		];
 
 		$field_defaults = [
-			'payment_cardlink_iris_order_status' => 2, // Processing
+			'payment_cardlink_iris_order_status'        => 2,  // Processing
+			'payment_cardlink_iris_failed_order_status' => 10, // Voided (legacy default)
 		];
 
 		foreach ($fields as $field) {

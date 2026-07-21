@@ -68,12 +68,13 @@ class ControllerExtensionPaymentCardlink extends Controller {
 		$fields = [
 			'mode','acquirer','merchantid','merchantpass','title','instalments',
 			'trtype','tokenization','iframe','order_status','preauth_order_status',
-			'xml_api','url_css','url_success','url_fail','status','sort_order'
+			'failed_order_status','xml_api','url_css','url_success','url_fail','status','sort_order'
 		];
 
 		$field_defaults = [
 			'payment_cardlink_order_status'        => 2,  // Processing
 			'payment_cardlink_preauth_order_status' => 1,  // Pending
+			'payment_cardlink_failed_order_status'  => 10, // Voided (legacy default)
 		];
 
 		foreach ($fields as $field) {

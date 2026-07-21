@@ -52,6 +52,8 @@ $_['entry_sort_order']			= 'Sort Order:';
 $_['entry_test']				= 'Environment:';
 $_['entry_acquirer']			= 'Acquirer:';
 $_['entry_order_status']		= 'Order Status:';
+$_['entry_failed_order_status'] = 'Order Status (Failed / Cancelled):';
+$_['text_failed_order_status_note'] = '<br />Order status set when the payment fails or is cancelled by the customer. No notification email is sent to the customer in this case.';
 
 // Error
 $_['error_permission']    = 'Warning: You do not have permission to modify payment Cardlink!';

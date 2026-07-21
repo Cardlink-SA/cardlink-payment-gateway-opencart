@@ -174,6 +174,7 @@ class ControllerExtensionPaymentCardlink extends Controller {
             $comment = "Cardlink SUCCESS. TxID: " . ($post['txId'] ?? 'N/A') . " | paymentRef: " . ($post['paymentRef'] ?? 'N/A');
             $url = $this->url->link('checkout/success', '', true);
             $status_message = 'success';
+            $notify = true;
             $this->cart->clear();
             unset(
                 $this->session->data['shipping_method'],
@@ -192,15 +193,18 @@ class ControllerExtensionPaymentCardlink extends Controller {
                 error_log('[Cardlink] saveTransaction failed: ' . $e->getMessage());
             }
         } else {
-            $status_id = 10; // fixed failed
+            $status_id = (int)$this->config->get('payment_cardlink_failed_order_status') ?: 10;
             $comment = "Cardlink FAILED/CANCELLED. status: {$post['status']} | message: " . ($post['message'] ?? 'N/A');
             $this->model_extension_payment_cardlink_common->restoreCartFromOrder($order_id);
             $this->session->data['error'] = $this->language->get('error_declined');
             $url = $this->url->link('checkout/checkout', '', true);
             $status_message = 'fail';
+            // Don't notify the customer by email — a bank-side decline or a user-initiated
+            // cancel shouldn't generate a "your order failed" message.
+            $notify = false;
         }
 
-        $this->model_checkout_order->addOrderHistory($order_id, $status_id, $comment, true);
+        $this->model_checkout_order->addOrderHistory($order_id, $status_id, $comment, $notify);
 
         $html = '<html><body>
             <script>

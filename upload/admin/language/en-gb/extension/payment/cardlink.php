@@ -54,6 +54,8 @@ $_['entry_acquirer']			= 'Acquirer:';
 $_['entry_order_status']		= 'Order Status (Captured/Purchase):';
 $_['entry_preauth_order_status']= 'Order Status (Pre-Auth / On Hold):';
 $_['text_preauth_order_status_note'] = '<br />Order status set when payment is pre-authorized (not yet captured).';
+$_['entry_failed_order_status'] = 'Order Status (Failed / Cancelled):';
+$_['text_failed_order_status_note'] = '<br />Order status set when the payment fails or is cancelled by the customer. No notification email is sent to the customer in this case.';
 $_['entry_xml_api']              = 'XML API Operations:';
 $_['text_xml_api_note']          = '<br />Enable to allow capture, void and refund operations directly from the Transactions page.';
 
