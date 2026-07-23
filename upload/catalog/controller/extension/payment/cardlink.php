@@ -193,18 +193,33 @@ class ControllerExtensionPaymentCardlink extends Controller {
                 error_log('[Cardlink] saveTransaction failed: ' . $e->getMessage());
             }
         } else {
-            $status_id = (int)$this->config->get('payment_cardlink_failed_order_status') ?: 10;
-            $comment = "Cardlink FAILED/CANCELLED. status: {$post['status']} | message: " . ($post['message'] ?? 'N/A');
+            error_log('[Cardlink] non-success callback status: ' . ($post['status'] ?? 'N/A') . ' | order_id: ' . $order_id);
+
             $this->model_extension_payment_cardlink_common->restoreCartFromOrder($order_id);
             $this->session->data['error'] = $this->language->get('error_declined');
             $url = $this->url->link('checkout/checkout', '', true);
             $status_message = 'fail';
-            // Don't notify the customer by email — a bank-side decline or a user-initiated
-            // cancel shouldn't generate a "your order failed" message.
-            $notify = false;
+
+            if (in_array(strtoupper($post['status'] ?? ''), ['CANCELED', 'CANCELLED'], true)) {
+                // The customer clicked "Cancel" at the bank page — this is not a failed
+                // payment, just an abandoned attempt. Leave the order's status untouched
+                // (no history entry, no email) so they can go back and retry payment or
+                // choose a different method on the same order.
+                $status_id = null;
+                $comment = "Cardlink CANCELLED by customer. status: {$post['status']}";
+                $notify = false;
+            } else {
+                // Genuine decline/error from the bank — record it, but still don't email
+                // the customer (a declined attempt isn't a final outcome for the order).
+                $status_id = (int)$this->config->get('payment_cardlink_failed_order_status') ?: 10;
+                $comment = "Cardlink FAILED. status: {$post['status']} | message: " . ($post['message'] ?? 'N/A');
+                $notify = false;
+            }
         }
 
-        $this->model_checkout_order->addOrderHistory($order_id, $status_id, $comment, $notify);
+        if ($status_id !== null) {
+            $this->model_checkout_order->addOrderHistory($order_id, $status_id, $comment, $notify);
+        }
 
         $html = '<html><body>
             <script>
